@@ -24,6 +24,14 @@ class m180424_153817_create_categorys_table extends Migration
         $this->insert('categorys', [
             'name' => 'Sport',
         ]);
+
+        $this->insert('categorys', [
+            'name' => 'Computer',
+        ]);
+
+        $this->insert('categorys', [
+            'name' => 'IT',
+        ]);
     }
 
     /**
