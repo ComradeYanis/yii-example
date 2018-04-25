@@ -5,6 +5,7 @@
 use yii\helpers\Html;
 
 $this->title =  $data['header_title'];
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-category">
     <div class="body-content">
