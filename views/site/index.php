@@ -5,7 +5,7 @@
 use yii\helpers\Html;
 
 $this->title = 'Categorys';
-$this->params['breadcrumbs'][] = 'Home';
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-index">
 

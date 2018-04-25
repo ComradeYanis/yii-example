@@ -99,6 +99,6 @@ class SiteController extends Controller
         if (empty($page)) throw new \yii\web\HttpException(404, 'No such page...');
         $data['header_title'] = $page->name;
         $data['title_page'] = $page->name;
-        return $this->render('page.php', compact('data','page','category'));
+        return $this->render('page.php', compact('data','page', 'category'));
     }
 }
