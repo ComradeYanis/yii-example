@@ -63,9 +63,9 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $categorys = Categorys::find()->select('id, name')->orderBy('name DESC')->all();
-        $pages = Pages::find()->select('id, name')->where('id_category=0')->all();
-        return $this->render('index', compact('categorys', 'pages'));
+        $query = Categorys::find()->select('id, name')->orderBy('name DESC');
+        $categorys = $query->all(); 
+        return $this->render('index', compact('categorys'));
     }
 
     public function actionCategory()
@@ -75,7 +75,7 @@ class SiteController extends Controller
         $category = Categorys::findOne(array('name' => $category_name));
         if (empty($category)) throw new \yii\web\HttpException(404, 'No such category...');
         $pages = Pages::find()
-            ->select('id_category, name')
+            ->select('id, id_category, name, description')
             ->where(['id_category' => $category->id])
             ->all();
         $data['header_title'] = $category->name;
@@ -85,9 +85,9 @@ class SiteController extends Controller
 
     public function actionPage()
     {
-        $page_name = Yii::$app->request->get('page');
+        $id_page = Yii::$app->request->get('id_page');
         $data = array();
-        $page = Pages::findOne(array('name' => $page_name));
+        $page = Pages::findOne($id_page);
 
         if (empty($page)) throw new \yii\web\HttpException(404, 'No such page...');
         $data['header_title'] = $page->name;
