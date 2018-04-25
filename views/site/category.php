@@ -12,7 +12,7 @@ $this->title =  $data['header_title'];
             <?php foreach ($pages as $page) {?> 
             <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
                 <h2><?php echo $page['name'] ?></h2>
-                <a href="<?= \yii\helpers\Url::to(['site/page','id_page' => $page->id])?>">Go!</a>
+                <a href="<?= \yii\helpers\Url::to(['site/page','page' => $page->name])?>">Go!</a>
             </div>
             <?php }?>
         </div>
