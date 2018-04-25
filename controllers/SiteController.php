@@ -63,9 +63,15 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $query = Categorys::find()->select('id, name')->orderBy('name DESC');
-        $categorys = $query->all(); 
-        return $this->render('index', compact('categorys'));
+        $categorys = Categorys::find()
+            ->select('id, name')
+            ->orderBy('name DESC')
+            ->all();
+        $pages = Pages::find()
+            ->select('name')
+            ->where('id_category=0')
+            ->all();
+        return $this->render('index', compact('categorys', 'pages'));
     }
 
     public function actionCategory()
@@ -85,75 +91,13 @@ class SiteController extends Controller
 
     public function actionPage()
     {
-        $id_page = Yii::$app->request->get('id_page');
+        $page_name = Yii::$app->request->get('page');
         $data = array();
-        $page = Pages::findOne($id_page);
+        $page = Pages::findOne(array('name' => $page_name));
 
         if (empty($page)) throw new \yii\web\HttpException(404, 'No such page...');
         $data['header_title'] = $page->name;
         $data['title_page'] = $page->name;
         return $this->render('page.php', compact('data','page'));
     }
-
-    // /**
-    //  * Login action.
-    //  *
-    //  * @return Response|string
-    //  */
-    // public function actionLogin()
-    // {
-    //     if (!Yii::$app->user->isGuest) {
-    //         return $this->goHome();
-    //     }
-
-    //     $model = new LoginForm();
-    //     if ($model->load(Yii::$app->request->post()) && $model->login()) {
-    //         return $this->goBack();
-    //     }
-
-    //     $model->password = '';
-    //     return $this->render('login', [
-    //         'model' => $model,
-    //     ]);
-    // }
-
-    // /**
-    //  * Logout action.
-    //  *
-    //  * @return Response
-    //  */
-    // public function actionLogout()
-    // {
-    //     Yii::$app->user->logout();
-
-    //     return $this->goHome();
-    // }
-
-    // *
-    //  * Displays contact page.
-    //  *
-    //  * @return Response|string
-     
-    // public function actionContact()
-    // {
-    //     $model = new ContactForm();
-    //     if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
-    //         Yii::$app->session->setFlash('contactFormSubmitted');
-
-    //         return $this->refresh();
-    //     }
-    //     return $this->render('contact', [
-    //         'model' => $model,
-    //     ]);
-    // }
-
-    // /**
-    //  * Displays about page.
-    //  *
-    //  * @return string
-    //  */
-    // public function actionAbout()
-    // {
-    //     return $this->render('about');
-    // }
 }
