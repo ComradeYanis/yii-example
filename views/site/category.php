@@ -18,5 +18,6 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
             <?php }?>
         </div>
+    <div align="center"><?= \yii\widgets\LinkPager::widget(['pagination' => $pageSize]) ?></div>        
     </div>
 </div>

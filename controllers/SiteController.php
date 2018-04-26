@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use Yii;
+use yii\data\Pagination;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
@@ -80,20 +81,21 @@ class SiteController extends Controller
         $data = array();
         $category = Categorys::findOne(array('name' => $category_name));
         if (empty($category)) throw new \yii\web\HttpException(404, 'No such category...');
-        $pages = Pages::find()
+        $pageQuery = Pages::find()
             ->select('id, id_category, name, description')
-            ->where(['id_category' => $category->id])
-            ->all();
+            ->where(['id_category' => $category->id]);    
+        $pageSize = new \yii\data\Pagination(['totalCount' => $pageQuery->count(), 'pageSize' => 3]);
+        $pages = $pageQuery->offset($pageSize->offset)->limit($pageSize->limit)->all();
         $data['header_title'] = $category->name;
         $data['title_page'] = $category->name;
-        return $this->render('category.php', compact('data', 'category', 'pages'));
+        return $this->render('category.php', compact('data', 'category', 'pages', 'pageSize'));
     }
 
     public function actionPage()
     {
         $page_name = Yii::$app->request->get('page');
         $data = array();
-        $page = Pages::findOne(array('name' => $page_name));
+        $page = Pages::findOne(array('name' => $page_name))->all();
         $category = Categorys::findOne($page->id_category);
 
         if (empty($page)) throw new \yii\web\HttpException(404, 'No such page...');
