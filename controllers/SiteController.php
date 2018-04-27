@@ -95,7 +95,7 @@ class SiteController extends Controller
     {
         $page_name = Yii::$app->request->get('page');
         $data = array();
-        $page = Pages::findOne(array('name' => $page_name))->all();
+        $page = Pages::findOne(array('name' => $page_name));
         $category = Categorys::findOne($page->id_category);
 
         if (empty($page)) throw new \yii\web\HttpException(404, 'No such page...');
