@@ -2,16 +2,13 @@
 
 namespace app\controllers;
 
-use Yii;
 use yii\data\Pagination;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
-use yii\web\Response;
+use yii\web\NotFoundHttpException;
 use app\models\Categorys;
 use app\models\Pages;
-// use app\models\LoginForm;
-// use app\models\ContactForm;
 
 class SiteController extends Controller
 {
@@ -64,43 +61,63 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $categorys = Categorys::find()
-            ->select('id, name')
-            ->orderBy('name DESC')
-            ->all();
-        $pages = Pages::find()
-            ->select('name')
-            ->where('id_category=0')
-            ->all();
-        return $this->render('index', compact('categorys', 'pages'));
+        return $this->render('index',[
+            'categorys' => Categorys::getForMain(),
+            'pages'     => Pages::getForMain()
+        ]);
     }
 
-    public function actionCategory()
+    /**
+     * @param $category
+     * @return string
+     * @throws NotFoundHttpException
+     */
+    public function actionCategory($category)
     {
-        $category_name = Yii::$app->request->get('category');
-        $data = array();
-        $category = Categorys::findOne(array('name' => $category_name));
-        if (empty($category)) throw new \yii\web\HttpException(404, 'No such category...');
-        $pageQuery = Pages::find()
-            ->select('id, id_category, name, description')
-            ->where(['id_category' => $category->id]);    
-        $pageSize = new \yii\data\Pagination(['totalCount' => $pageQuery->count(), 'pageSize' => 3]);
-        $pages = $pageQuery->offset($pageSize->offset)->limit($pageSize->limit)->all();
-        $data['header_title'] = $category->name;
-        $data['title_page'] = $category->name;
-        return $this->render('category.php', compact('data', 'category', 'pages', 'pageSize'));
+        if($category = Categorys::findOne(['name' => $category])) {
+            $data = array();
+
+            $pageQuery = Pages::find()
+                ->select('id, id_category, name, description')
+                ->where(['id_category' => $category->id]);
+
+            $pageSize = new Pagination(['totalCount' => $pageQuery->count(), 'pageSize' => 3]);
+            $pages = $pageQuery->offset($pageSize->offset)->limit($pageSize->limit)->all();
+
+            $data['header_title'] = $category->name;
+            $data['title_page'] = $category->name;
+
+            return $this->render('category', [
+                'data'      => $data,
+                'pages'     => $pages,
+                'pageSize'  => $pageSize
+            ]);
+        } else {
+            throw new NotFoundHttpException('No such category...');
+        }
     }
 
-    public function actionPage()
+    /**
+     * @param $page
+     * @return string
+     * @throws \yii\web\HttpException
+     */
+    public function actionPage($page)
     {
-        $page_name = Yii::$app->request->get('page');
-        $data = array();
-        $page = Pages::findOne(array('name' => $page_name));
-        $category = Categorys::findOne($page->id_category);
+        if($page = Pages::findOne(array('name' => $page))) {
 
-        if (empty($page)) throw new \yii\web\HttpException(404, 'No such page...');
-        $data['header_title'] = $page->name;
-        $data['title_page'] = $page->name;
-        return $this->render('page.php', compact('data','page', 'category'));
+            $data = [];
+
+            $data['header_title'] = $page->name;
+            $data['title_page'] = $page->name;
+
+            return $this->render('page.php', [
+                'data' => $data,
+                'page'  => $page,
+                'category'  => $page->category
+            ]);
+        } else {
+            throw new NotFoundHttpException('No such page...');
+        }
     }
 }

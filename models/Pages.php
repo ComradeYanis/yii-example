@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use app\models\Categorys;
 
 /**
  * This is the model class for table "pages".
@@ -10,6 +11,7 @@ use Yii;
  * @property int $id
  * @property int $id_category
  * @property string $name
+ * @property Categorys $category
  * @property string $description
  */
 class Pages extends \yii\db\ActiveRecord
@@ -47,5 +49,18 @@ class Pages extends \yii\db\ActiveRecord
             'name' => 'Name',
             'description' => 'Description',
         ];
+    }
+
+    public static function getForMain()
+    {
+        return self::find()->select('name')->orderBy('name DESC')->where(['id_category' => '0'])->all();
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCategory()
+    {
+        return $this->hasOne(Categorys::class, ['id' => 'id_category']);
     }
 }

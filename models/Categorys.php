@@ -42,4 +42,12 @@ class Categorys extends \yii\db\ActiveRecord
             'name' => 'Name',
         ];
     }
+
+    /**
+     * @return Categorys[]|Pages[]|array|\yii\db\ActiveRecord[]
+     */
+    public static function getForMain()
+    {
+        return self::find()->select('id, name')->orderBy('name DESC')->all();
+    }
 }
