@@ -2,8 +2,6 @@
 
 namespace app\models;
 
-use Yii;
-use app\models\Categorys;
 
 /**
  * This is the model class for table "pages".
