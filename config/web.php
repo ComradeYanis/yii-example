@@ -4,7 +4,7 @@ use \yii\web\Request;
 
 $baseUrl = str_replace('/web', '', (new Request)->getBaseUrl());
 $params = require __DIR__ . '/params.php';
-$db = require __DIR__ . '/db.php';
+$defaults = require __DIR__ . '/defaults.php';
 
 $config = [
     'id' => 'basic',
@@ -46,7 +46,6 @@ $config = [
                 ],
             ],
         ],
-        'db' => $db,
         
         'urlManager' => [
             'baseUrl' => $baseUrl,
@@ -64,6 +63,11 @@ $config = [
     ],
     'params' => $params,
 ];
+
+if(file_exists($defaults)){
+    $config = \yii\helpers\ArrayHelper::merge($config, $defaults);
+}
+
 
 if (YII_ENV_DEV) {
     // configuration adjustments for 'dev' environment
