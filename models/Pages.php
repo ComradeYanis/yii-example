@@ -31,7 +31,7 @@ class Pages extends \yii\db\ActiveRecord
             [['id_category', 'name', 'description'], 'required'],
             [['id_category'], 'integer'],
             [['description'], 'string'],
-            [['name'], 'string', 'max' => 25],
+            [['name'], 'string', 'length' => [6, 25]],
             [['name'], 'unique'],
         ];
     }
@@ -42,16 +42,16 @@ class Pages extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'id_category' => 'Id Category',
-            'name' => 'Name',
-            'description' => 'Description',
+            'id'            => 'ID',
+            'id_category'   => 'Id Category',
+            'name'          => 'Name',
+            'description'   => 'Description',
         ];
     }
 
     public static function getForMain()
     {
-        return self::find()->select('name')->orderBy('name DESC')->where(['id_category' => '0'])->all();
+        return self::find()->select('name')->orderBy(['name' => SORT_DESC, 'id_category' => SORT_ASC])->all();
     }
 
     /**
