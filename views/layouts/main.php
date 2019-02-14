@@ -51,6 +51,7 @@ AppAsset::register($this);
         ]) ?>
         <?= Alert::widget() ?>
         <div class="row">
+            <?= \app\widgets\Slider::widget() ?>
             <div class="col-lg-10 col-md-9">
                 <?= $content ?>
             </div>
