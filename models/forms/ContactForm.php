@@ -1,6 +1,6 @@
 <?php
 
-namespace app\models;
+namespace app\models\forms;
 
 use Yii;
 use yii\base\Model;
@@ -10,12 +10,30 @@ use yii\base\Model;
  */
 class ContactForm extends Model
 {
+    /**
+     * @var string $name
+     */
     public $name;
-    public $email;
-    public $subject;
-    public $body;
-    public $verifyCode;
 
+    /**
+     * @var string $email
+     */
+    public $email;
+
+    /**
+     * @var string $subject
+     */
+    public $subject;
+
+    /**
+     * @var string $body
+     */
+    public $body;
+
+    /**
+     * @var string $verifyCode
+     */
+    public $verifyCode;
 
     /**
      * @return array the validation rules.
@@ -28,6 +46,7 @@ class ContactForm extends Model
             // email has to be a valid email address
             ['email', 'email'],
             // verifyCode needs to be entered correctly
+            ['verifyCode', 'required', 'message' => 'Approve that u are not a robot'],
             ['verifyCode', 'captcha'],
         ];
     }

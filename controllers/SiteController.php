@@ -19,7 +19,7 @@ class SiteController extends Controller
     {
         return [
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'only' => ['logout'],
                 'rules' => [
                     [
@@ -30,7 +30,7 @@ class SiteController extends Controller
                 ],
             ],
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'logout' => ['post'],
                 ],
@@ -62,7 +62,6 @@ class SiteController extends Controller
     public function actionIndex()
     {
         return $this->render('index',[
-            'categorys' => Categorys::getForMain(),
             'pages'     => Pages::getForMain()
         ]);
     }
@@ -75,13 +74,13 @@ class SiteController extends Controller
     public function actionCategory($category)
     {
         if($category = Categorys::findOne(['name' => $category])) {
-            $data = array();
+            $data = [];
 
             $pageQuery = Pages::find()
                 ->select('id, id_category, name, description')
                 ->where(['id_category' => $category->id]);
 
-            $pageSize = new Pagination(['totalCount' => $pageQuery->count(), 'pageSize' => 3]);
+            $pageSize = new Pagination(['totalCount' => $pageQuery->count(), 'pageSize' => 10]);
             $pages = $pageQuery->offset($pageSize->offset)->limit($pageSize->limit)->all();
 
             $data['header_title'] = $category->name;

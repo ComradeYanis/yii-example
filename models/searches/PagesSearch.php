@@ -1,8 +1,7 @@
 <?php
 
-namespace app\models;
+namespace app\models\searches;
 
-use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Pages;
@@ -19,7 +18,7 @@ class PagesSearch extends Pages
     {
         return [
             [['id', 'id_category'], 'integer'],
-            [['name', 'description'], 'safe'],
+            [['name', 'description'], 'string'],
         ];
     }
 

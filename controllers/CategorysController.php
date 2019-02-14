@@ -4,7 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Categorys;
-use app\models\CategorysSearch;
+use app\models\searches\CategorysSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -30,7 +30,7 @@ class CategorysController extends Controller
     }
 
     /**
-     * Lists all Categorys models.
+     * Lists all Categories models.
      * @return mixed
      */
     public function actionIndex()
@@ -45,7 +45,7 @@ class CategorysController extends Controller
     }
 
     /**
-     * Displays a single Categorys model.
+     * Displays a single Categories model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -96,7 +96,7 @@ class CategorysController extends Controller
     }
 
     /**
-     * Deletes an existing Categorys model.
+     * Deletes an existing Categories model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -112,10 +112,10 @@ class CategorysController extends Controller
     }
 
     /**
-     * Finds the Categorys model based on its primary key value.
+     * Finds the Categories model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Categorys the loaded model
+     * @return Categorys|null the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
